@@ -67,3 +67,11 @@ src/MDK/OUT/*
 *.swp
 *.uvguix.*
 JLinkLog.txt
+# Mac metadata
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
