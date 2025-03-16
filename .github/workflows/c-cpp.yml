@@ -13,15 +13,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Get current date
-      id: date
-      run: |
-        echo "{date}={$(date +'%Y-%m-%d')}" >> $GITHUB_STATE
+    - name: set date env
+      run: echo "NOW=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
     - uses: carlosperate/arm-none-eabi-gcc-action@v1
     - name: make
       run: make
-    - name: Save production artifacts
+    - name: save production artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: group-127-code-v${{ github.run_number }}-${{ env.date }}.bin
+        name: group-127-code-v${{ github.run_number }}-${{ env.NOW }}.bin
         path: build/group-127-code.bin
