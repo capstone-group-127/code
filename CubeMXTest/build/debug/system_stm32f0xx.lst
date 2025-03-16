@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s 			page 1
+ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\cccDHDAw.s 			page 1
 
 
    1              		.cpu cortex-m0
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s 			page 1
   30:Core/Src/system_stm32f0xx.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
   31:Core/Src/system_stm32f0xx.c ****   *
   32:Core/Src/system_stm32f0xx.c ****   ******************************************************************************
-ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s 			page 2
+ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\cccDHDAw.s 			page 2
 
 
   33:Core/Src/system_stm32f0xx.c ****   */
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s 			page 1
   87:Core/Src/system_stm32f0xx.c ****   */
   88:Core/Src/system_stm32f0xx.c **** 
   89:Core/Src/system_stm32f0xx.c **** /** @addtogroup STM32F0xx_System_Private_Variables
-ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s 			page 3
+ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\cccDHDAw.s 			page 3
 
 
   90:Core/Src/system_stm32f0xx.c ****   * @{
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s 			page 1
   36              	.LFE40:
   38              		.section	.text.SystemCoreClockUpdate,"ax",%progbits
   39              		.align	1
-ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s 			page 4
+ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\cccDHDAw.s 			page 4
 
 
   40              		.global	SystemCoreClockUpdate
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s 			page 1
   50              		@ frame_needed = 0, uses_anonymous_args = 0
   51 0000 10B5     		push	{r4, lr}
   52              		.cfi_def_cfa_offset 8
-ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s 			page 5
+ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\cccDHDAw.s 			page 5
 
 
   53              		.cfi_offset 4, -8
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s 			page 1
  203:Core/Src/system_stm32f0xx.c ****         SystemCoreClock = (HSE_VALUE/predivfactor) * pllmull;
  204:Core/Src/system_stm32f0xx.c ****       }
  205:Core/Src/system_stm32f0xx.c **** #if defined(STM32F042x6) || defined(STM32F048xx) || defined(STM32F071xB) || defined(STM32F072xB) ||
-ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s 			page 6
+ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\cccDHDAw.s 			page 6
 
 
  206:Core/Src/system_stm32f0xx.c ****       else if (pllsource == RCC_CFGR_PLLSRC_HSI48_PREDIV)
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s 			page 1
  191:Core/Src/system_stm32f0xx.c ****       break;
  107              		.loc 1 191 7 is_stmt 1 view .LVU20
  191:Core/Src/system_stm32f0xx.c ****       break;
-ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s 			page 7
+ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\cccDHDAw.s 			page 7
 
 
  108              		.loc 1 191 23 is_stmt 0 view .LVU21
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s 			page 1
  147              		.loc 1 198 34 view .LVU36
  148 0052 1140     		ands	r1, r2
  198:Core/Src/system_stm32f0xx.c **** 
-ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s 			page 8
+ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\cccDHDAw.s 			page 8
 
 
  149              		.loc 1 198 20 view .LVU37
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s 			page 1
  190              		.loc 1 209 9 is_stmt 1 view .LVU50
  209:Core/Src/system_stm32f0xx.c ****       }
  191              		.loc 1 209 39 is_stmt 0 view .LVU51
-ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s 			page 9
+ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\cccDHDAw.s 			page 9
 
 
  192 0082 0948     		ldr	r0, .L11+16
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s 			page 1
  240              		.global	SystemCoreClock
  241              		.section	.data.SystemCoreClock,"aw"
  242              		.align	2
-ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s 			page 10
+ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\cccDHDAw.s 			page 10
 
 
  245              	SystemCoreClock:
@@ -549,22 +549,22 @@ ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s 			page 1
  250              		.file 3 "C:/Users/Toby Heinemann/AppData/Roaming/Code/User/globalStorage/bmd.stm32-for-vscode/@xpa
  251              		.file 4 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
  252              		.file 5 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/stm32f072xb.h"
-ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s 			page 11
+ARM GAS  C:\Users\TOBYHE~1\AppData\Local\Temp\cccDHDAw.s 			page 11
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 system_stm32f0xx.c
-C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s:19     .text.SystemInit:00000000 $t
-C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s:25     .text.SystemInit:00000000 SystemInit
-C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s:39     .text.SystemCoreClockUpdate:00000000 $t
-C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s:45     .text.SystemCoreClockUpdate:00000000 SystemCoreClockUpdate
-C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s:217    .text.SystemCoreClockUpdate:00000098 $d
-C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s:245    .data.SystemCoreClock:00000000 SystemCoreClock
-C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s:237    .rodata.AHBPrescTable:00000000 AHBPrescTable
-C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s:230    .rodata.APBPrescTable:00000000 APBPrescTable
-C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s:227    .rodata.APBPrescTable:00000000 $d
-C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s:234    .rodata.AHBPrescTable:00000000 $d
-C:\Users\TOBYHE~1\AppData\Local\Temp\ccBH7TIG.s:242    .data.SystemCoreClock:00000000 $d
+C:\Users\TOBYHE~1\AppData\Local\Temp\cccDHDAw.s:19     .text.SystemInit:00000000 $t
+C:\Users\TOBYHE~1\AppData\Local\Temp\cccDHDAw.s:25     .text.SystemInit:00000000 SystemInit
+C:\Users\TOBYHE~1\AppData\Local\Temp\cccDHDAw.s:39     .text.SystemCoreClockUpdate:00000000 $t
+C:\Users\TOBYHE~1\AppData\Local\Temp\cccDHDAw.s:45     .text.SystemCoreClockUpdate:00000000 SystemCoreClockUpdate
+C:\Users\TOBYHE~1\AppData\Local\Temp\cccDHDAw.s:217    .text.SystemCoreClockUpdate:00000098 $d
+C:\Users\TOBYHE~1\AppData\Local\Temp\cccDHDAw.s:245    .data.SystemCoreClock:00000000 SystemCoreClock
+C:\Users\TOBYHE~1\AppData\Local\Temp\cccDHDAw.s:237    .rodata.AHBPrescTable:00000000 AHBPrescTable
+C:\Users\TOBYHE~1\AppData\Local\Temp\cccDHDAw.s:230    .rodata.APBPrescTable:00000000 APBPrescTable
+C:\Users\TOBYHE~1\AppData\Local\Temp\cccDHDAw.s:227    .rodata.APBPrescTable:00000000 $d
+C:\Users\TOBYHE~1\AppData\Local\Temp\cccDHDAw.s:234    .rodata.AHBPrescTable:00000000 $d
+C:\Users\TOBYHE~1\AppData\Local\Temp\cccDHDAw.s:242    .data.SystemCoreClock:00000000 $d
 
 UNDEFINED SYMBOLS
 __aeabi_uidiv

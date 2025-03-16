@@ -31,7 +31,7 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "stdio.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -52,8 +52,6 @@ extern "C" {
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
-void SRAM_WRITE(uint8_t *data, uint8_t address[]);
-uint8_t SRAM_READ(uint8_t address[]);
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */
@@ -61,14 +59,6 @@ uint8_t SRAM_READ(uint8_t address[]);
 /* Private defines -----------------------------------------------------------*/
 #define LED_Pin GPIO_PIN_13
 #define LED_GPIO_Port GPIOC
-
-static const uint8_t CMD_WRITE_BIT_EEPROM = 0x06;
-static const uint8_t CMD_WRDI_BIT_EEPROM = 0x04;
-static const uint8_t CMD_WRITE_EEPROM = 0x02;
-static const uint8_t CMD_READ_EEPROM = 0x03;
-static const uint8_t CMD_READ_SRAM = 0x03;
-static const uint8_t CMD_WRITE_SRAM = 0x02;
-
 
 /* USER CODE BEGIN Private defines */
 
