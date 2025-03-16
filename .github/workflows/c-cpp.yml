@@ -13,5 +13,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - uses: carlosperate/arm-none-eabi-gcc-action@v1
     - name: make
       run: make
