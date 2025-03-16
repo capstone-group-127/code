@@ -16,3 +16,9 @@ jobs:
     - uses: carlosperate/arm-none-eabi-gcc-action@v1
     - name: make
       run: make
+    - name: Save production artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: group-127-code.bin
+        path: |
+          ${{ runner.workspace }}/build/group-127-code.bin
