@@ -13,6 +13,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - uses: carlosperate/arm-none-eabi-gcc-action@v1
+    - uses: xanderhendriks/action-build-stm32cubeide@v10.0
+      with:
+        project-path: '/'
     - name: make
       run: make
