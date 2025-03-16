@@ -16,8 +16,8 @@ jobs:
     - uses: carlosperate/arm-none-eabi-gcc-action@v1
     - name: make
       run: make
-      - name: Save production artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: group-127-code-v${{ github.run_number }}-${{ github.event.repository.updated_at.replace(':', '-') }}.bin
-          path: build/group-127-code.bin
+    - name: Save production artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: group-127-code-v${{ github.run_number }}-${{ github.event.repository.updated_at.replace(':', '-') }}.bin
+        path: build/group-127-code.bin
