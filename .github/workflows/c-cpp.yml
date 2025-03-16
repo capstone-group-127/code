@@ -20,5 +20,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: group-127-code.bin
-        path: |
-          ${{ runner.workspace }}/build/group-127-code.bin
+        path: build/group-127-code.bin
