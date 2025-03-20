@@ -58,20 +58,15 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define LED_PWM_Pin GPIO_PIN_1
-#define LED_PWM_GPIO_Port GPIOA
-#define SS1_Pin GPIO_PIN_0
-#define SS1_GPIO_Port GPIOB
-#define SS2_Pin GPIO_PIN_1
-#define SS2_GPIO_Port GPIOB
-#define SS3_Pin GPIO_PIN_2
-#define SS3_GPIO_Port GPIOB
-#define USB_RESET_Pin GPIO_PIN_12
-#define USB_RESET_GPIO_Port GPIOB
-#define USB_SUS_Pin GPIO_PIN_13
-#define USB_SUS_GPIO_Port GPIOB
-#define USB_CLK_Pin GPIO_PIN_8
-#define USB_CLK_GPIO_Port GPIOA
+#define LED_Pin GPIO_PIN_13
+#define LED_GPIO_Port GPIOC
+#define CS_SDCARD_Pin GPIO_PIN_0
+#define CS_SDCARD_GPIO_Port GPIOB
+#define CS_EEPROM_Pin GPIO_PIN_1
+#define CS_EEPROM_GPIO_Port GPIOB
+#define CS_SRAM_Pin GPIO_PIN_2
+#define CS_SRAM_GPIO_Port GPIOB
+#define SD_SPI_HANDLE hspi2
 
 /* USER CODE BEGIN Private defines */
 

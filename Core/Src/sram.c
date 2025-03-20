@@ -8,23 +8,23 @@ static const uint8_t CMD_WRITE = 0x02;
 void sram_write(uint8_t data, uint16_t address) {
     uint8_t memory_address[3] = {(address >> 16) & 0xFF, (address >> 8) & 0xFF, address & 0xFF};
 
-    HAL_GPIO_WritePin(GPIOB, SS3_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(CS_SRAM_GPIO_Port, CS_SRAM_Pin, GPIO_PIN_RESET);
     HAL_SPI_Transmit(&hspi1, (uint8_t *)&CMD_WRITE, 1, 100);
     HAL_SPI_Transmit(&hspi1, memory_address, 3, 100);
     HAL_SPI_Transmit(&hspi1, &data, 1, 100);
-    HAL_GPIO_WritePin(GPIOB, SS3_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(CS_SRAM_GPIO_Port, CS_SRAM_Pin, GPIO_PIN_SET);
 }
 
 uint8_t sram_read(uint16_t address) {
     uint8_t memory_address[3] = {(address >> 16) & 0xFF, (address >> 8) & 0xFF, address & 0xFF};
     uint8_t data_read_back = 0;
 
-    HAL_GPIO_WritePin(GPIOB, SS3_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(CS_SRAM_GPIO_Port, CS_SRAM_Pin, GPIO_PIN_RESET);
     HAL_SPI_Transmit(&hspi1, (uint8_t *)&CMD_READ, 1, 100);
     HAL_SPI_Transmit(&hspi1, memory_address, 3, 100);
     HAL_SPI_Receive(&hspi1, &data_read_back, 1, 100);
     HAL_SPI_Receive(&hspi1, &data_read_back, 1, 100);
-    HAL_GPIO_WritePin(GPIOB, SS3_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(CS_SRAM_GPIO_Port, CS_SRAM_Pin, GPIO_PIN_SET);
 
     return data_read_back;
 }
