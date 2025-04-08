@@ -119,7 +119,6 @@ void PendSV_Handler(void)
 
   /* USER CODE END PendSV_IRQn 1 */
 }
-/* USER CODE BEGIN SysTick_IRQn 0 */
 
 /**
   * @brief This function handles System tick timer.
@@ -145,12 +144,12 @@ void PendSV_Handler(void)
 	    SDTimer_Handler();
 	  }
 
-    /* USER CODE END SysTick_IRQn 0 */
-    HAL_IncTick();
-    /* USER CODE BEGIN SysTick_IRQn 1 */
+  /* USER CODE END SysTick_IRQn 0 */
+  HAL_IncTick();
+  /* USER CODE BEGIN SysTick_IRQn 1 */
 
-    /* USER CODE END SysTick_IRQn 1 */
-  }
+  /* USER CODE END SysTick_IRQn 1 */
+}
 
 /******************************************************************************/
 /* STM32F0xx Peripheral Interrupt Handlers                                    */

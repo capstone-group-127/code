@@ -157,8 +157,8 @@ int main(void)
 	/* Open file to read */
 	if(f_open(&fil, "first.txt", FA_READ) != FR_OK) {
 		HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
-    	HAL_Delay(1000);
-    	HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);
+      	HAL_Delay(1000);
+      	HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);
 	}
 	HAL_Delay(1000);
 	while(f_gets(buffer, sizeof(buffer), &fil))
@@ -189,24 +189,17 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1) {
     /* USER CODE END WHILE */
-    	HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
-	    HAL_Delay(750);
-	    HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);
-    /* USER CODE BEGIN 3 */
 
+    /* USER CODE BEGIN 3 */
+    /* LED ON */
+    HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
+    HAL_Delay(500);
+    /* LED OFF */
+    HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);
+    HAL_Delay(500);
 
   }
   /* USER CODE END 3 */
-}
-
-/* blink the LED a number of times, spaced ms apart */
-void blinkTimesCadence(int blinks, int cadence) {
-	for (int i = 0; i < blinks; i++) {
-		HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
-		HAL_Delay(cadence);
-		HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);
-		HAL_Delay(cadence);
-	}
 }
 
 /**

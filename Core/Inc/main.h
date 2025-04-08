@@ -66,6 +66,10 @@ void Error_Handler(void);
 #define CS_EEPROM_GPIO_Port GPIOB
 #define CS_SRAM_Pin GPIO_PIN_2
 #define CS_SRAM_GPIO_Port GPIOB
+#define USB_RESET_Pin GPIO_PIN_12
+#define USB_RESET_GPIO_Port GPIOB
+#define USB_SUSPEND_Pin GPIO_PIN_13
+#define USB_SUSPEND_GPIO_Port GPIOB
 #define SD_SPI_HANDLE hspi2
 
 /* USER CODE BEGIN Private defines */
