@@ -62,7 +62,7 @@ uint8_t eeprom_read(uint16_t address) {
   return data_read_back;
 }
 
-void eeprom_read_multi(uint8_t *data, uint16_t address, uint16_t length) {
+void eeprom_read_batch(uint8_t *data, uint16_t address, uint16_t length) {
   // Send the read command
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, GPIO_PIN_RESET);
   HAL_SPI_Transmit(&hspi1, (uint8_t *)&CMD_READ, 1, 100);
