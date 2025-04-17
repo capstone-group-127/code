@@ -123,26 +123,9 @@ void PendSV_Handler(void)
 /**
   * @brief This function handles System tick timer.
   */
-  void SDTimer_Handler(void)
-  {
-    if(Timer1 > 0)
-      Timer1--;
-
-    if(Timer2 > 0)
-      Timer2--;
-  }
-
-
-
-  void SysTick_Handler(void)
-  {
-
-	  FatFsCnt++;
-	  if(FatFsCnt >= 10)
-	  {
-	    FatFsCnt = 0;
-	    SDTimer_Handler();
-	  }
+void SysTick_Handler(void)
+{
+  /* USER CODE BEGIN SysTick_IRQn 0 */
 
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
