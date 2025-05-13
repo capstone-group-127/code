@@ -28,6 +28,7 @@
 /* USER CODE BEGIN Includes */
 #include "eeprom.h"
 #include "sram.h"
+#include <stdint.h>
 
 /* USER CODE END Includes */
 
@@ -63,8 +64,9 @@ DWORD fre_clust;
 uint32_t totalSpace, freeSpace;
 char buffer[100];
 uint8_t uartRxBuf[1];
-uint8_t receivedData[7];
+uint8_t receivedData[15];
 uint8_t index = 0;
+uint32_t totalBytes = 0;
 
 /* USER CODE END PV */
 
@@ -117,18 +119,37 @@ int main(void) {
 
   setbuf(stdout, NULL);
 
-  printf("booted");
-
   /* setup the timer for PWM */
   TIM1->ARR = 1000;
   TIM1->CCR1 = 1;
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
 
+  /* initialize USB */
+  HAL_GPIO_WritePin(USB_RESET_GPIO_Port, USB_RESET_Pin, GPIO_PIN_SET);
+	HAL_Delay(1);
+	HAL_GPIO_WritePin(USB_RESET_GPIO_Port, USB_RESET_Pin, GPIO_PIN_RESET);
+	HAL_Delay(1);
+	HAL_GPIO_WritePin(USB_RESET_GPIO_Port, USB_RESET_Pin, GPIO_PIN_SET);
+	HAL_Delay(1);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  printf("\r\n\e[32m➜ \e[0m ");
+  printf("\e[2J");
+  printf("\r\nd888888P dP                   dP     dP                                  888888ba                                      ");
+  printf("\r\n   88    88                   88     88                                  88    `8b                                     ");
+  printf("\r\n   88    88d888b. .d8888b.    88aaaaa88a .d8888b. 88d888b. 88d8b.d8b.    88     88 88d888b. .d8888b. 88d888b. .d8888b. ");
+  printf("\r\n   88    88'  `88 88ooood8    88     88  88'  `88 88'  `88 88'`88'`88    88     88 88'  `88 88'  `88 88'  `88 88ooood8 ");
+  printf("\r\n   88    88    88 88.  ...    88     88  88.  .88 88       88  88  88    88    .8P 88       88.  .88 88    88 88.  ... ");
+  printf("\r\n   dP    dP    dP `88888P'    dP     dP  `88888P8 dP       dP  dP  dP    8888888P  dP       `88888P' dP    dP `88888P' ");
+  printf("\r\n\n\nCommands:");
+  printf("\r\n  - save: saves 1KB of data to the EEPROM");
+  printf("\r\n  - read: reads 1KB of data from the EEPROM");
+  printf("\r\n  - breathe: dims and brightens the LED repeatedly");
+  printf("\r\n  - brightness: sets the LED brightness");
+  printf("\r\n  - write: writes 4GB of data to the SD card");
+  printf("\r\n\n\n\e[32m➜ \e[0m ");
   while (1) {
     /* USER CODE END WHILE */
 
@@ -220,75 +241,62 @@ int main(void) {
                  "and 100.\r\n");
         }
       } else if (strncmp((char *)receivedData, "save", 4) == 0) {
-        printf("\r\nEnter data to save to EEPROM: ");
-        uint8_t eepromInput[100] = {0};
-        uint8_t eepromIndex = 0;
-
-        // Collect user input
-        while (1) {
-          HAL_UART_Receive(&huart1, uartRxBuf, 1, HAL_MAX_DELAY);
-          HAL_UART_Transmit(&huart1, uartRxBuf, 1, HAL_MAX_DELAY);
-
-          if (uartRxBuf[0] == '\r') { // User pressed ENTER
-            eepromInput[eepromIndex] = '\0';
-            printf("\r\n");
-            break;
-          } else if (uartRxBuf[0] == '\b' || uartRxBuf[0] == 127) { // BACKSPACE
-            if (eepromIndex > 0) {
-              eepromIndex--;
-              printf("\033[2D");
-              printf(" ");
-              printf("\033[1D");
-            } else {
-              printf("\033[1D");
+      printf("Writing test pattern to EEPROM...\r\n");
+          uint8_t write_error = 0;
+          for (uint16_t address = 0; address < 0x7D0; address += 16) {
+            // Note: sizeof("PSSC COMPLETION") is 16 (includes the null terminator)
+            uint8_t data[] = "PSSC COMPLETION";
+            // Check return status
+            if (eeprom_write_batch(data, address, sizeof(data)) != HAL_OK) {
+               printf("Error writing data to address %04X\r\n", address);
+               write_error = 1;
+               break; // Stop on error
             }
+            // Optional: Small delay to allow printf buffer to flush if needed, or remove
+            // HAL_Delay(1);
+            // Reduce print frequency if it's too slow/spammy
+            if ((address % 0x100) == 0) { // Print every 256 bytes
+                 printf("Written up to address %04X...\r\n", address);
+            }
+          }
+
+          if (!write_error) {
+              printf("\r\nData write sequence completed. 1KB successfully written.\r\n");
+              // Optional: Disable write protect at the end
+              // eeprom_write_disable();
           } else {
-            eepromInput[eepromIndex++] = uartRxBuf[0];
+               printf("\r\nData write sequence failed.\r\n");
           }
-        }
-
-        // Write the input to EEPROM, repeating until 1000KB is written
-        uint16_t address = 0;
-        uint32_t totalBytes = 0;
-        uint16_t chunkSize = 64; // Write in chunks of 64 bytes
-        uint8_t chunk[64];
-
-        while (totalBytes < 1024 * 1000) {
-          for (uint16_t i = 0; i < chunkSize; i++) {
-            chunk[i] = eepromInput[i % eepromIndex];
-          }
-
-          eeprom_write_batch(chunk, address, chunkSize);
-          address += chunkSize;
-          totalBytes += chunkSize;
-
-          printf(".");
-        }
-
-        printf("\r\nData successfully saved to EEPROM.\r\n");
       } else if (strncmp((char *)receivedData, "read", 4) == 0) {
-        uint16_t address = 0;
-        uint32_t totalBytes = 0;
-        uint16_t chunkSize = 64; // Write in chunks of 64 bytes
-        uint8_t chunk[64];
+      printf("Reading data from EEPROM...\r\n");
+          uint8_t read_error = 0;
+          for (uint16_t address = 0; address < 0x7D0; address += 16) {
+            // Buffer size 16 for data + 1 for null terminator
+            uint8_t data[17] = {0};
+            // *** Read exactly 16 bytes ***
+            const uint16_t bytes_to_read = 16;
 
-        while (totalBytes < 1024 * 1000) {
-          eeprom_read_batch(chunk, address, chunkSize);
-          address += chunkSize;
-          totalBytes += chunkSize;
+            // Check return status
+            if (eeprom_read_batch(data, address, bytes_to_read) != HAL_OK) {
+                printf("Error reading data from address %04X\r\n", address);
+                read_error = 1;
+                break; // Stop on error
+            }
 
-          printf(".");
-        }
+            // Ensure null termination just in case (should already be zeroed)
+            data[bytes_to_read] = '\0';
+            printf("Address %04X: %s\r\n", address, data);
 
-        // print it
-        for (uint16_t i = 0; i < totalBytes; i++) {
-          printf("%02X ", chunk[i]);
-          if ((i + 1) % 16 == 0) {
-            printf("\r\n");
+             // Optional: Add a small delay if printf output gets garbled / too fast
+             // HAL_Delay(5);
           }
-        }
-
-        printf("\r\nData successfully read from EEPROM.\r\n");
+           if (!read_error) {
+              printf("\r\nData read sequence completed. 1KB successfully read.\r\n");
+          } else {
+               printf("\r\nData read sequence failed.\r\n");
+          }
+      } else if(strncmp((char *)receivedData, "reboot", 6) == 0) {
+      	NVIC_SystemReset();
       } else {
         printf("\r\nInvalid command: %s", receivedData);
         printf("Valid commands: prox, sram, gps, ping, pong, clear, pic\r\n");
