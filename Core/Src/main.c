@@ -64,7 +64,7 @@ DWORD fre_clust;
 uint32_t totalSpace, freeSpace;
 char buffer[100];
 uint8_t uartRxBuf[1];
-uint8_t receivedData[15];
+uint8_t receivedData[1024];
 uint8_t index = 0;
 uint32_t totalBytes = 0;
 
@@ -121,7 +121,7 @@ int main(void) {
 
   /* setup the timer for PWM */
   TIM1->ARR = 1000;
-  TIM1->CCR1 = 1;
+  TIM1->CCR1 = 1000;
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
 
   /* initialize USB */
@@ -137,170 +137,49 @@ int main(void) {
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   printf("\e[2J");
-  printf("\r\nd888888P dP                   dP     dP                                  888888ba                                      ");
-  printf("\r\n   88    88                   88     88                                  88    `8b                                     ");
-  printf("\r\n   88    88d888b. .d8888b.    88aaaaa88a .d8888b. 88d888b. 88d8b.d8b.    88     88 88d888b. .d8888b. 88d888b. .d8888b. ");
-  printf("\r\n   88    88'  `88 88ooood8    88     88  88'  `88 88'  `88 88'`88'`88    88     88 88'  `88 88'  `88 88'  `88 88ooood8 ");
-  printf("\r\n   88    88    88 88.  ...    88     88  88.  .88 88       88  88  88    88    .8P 88       88.  .88 88    88 88.  ... ");
-  printf("\r\n   dP    dP    dP `88888P'    dP     dP  `88888P8 dP       dP  dP  dP    8888888P  dP       `88888P' dP    dP `88888P' ");
-  printf("\r\n\n\nCommands:");
-  printf("\r\n  - save: saves 1KB of data to the EEPROM");
-  printf("\r\n  - read: reads 1KB of data from the EEPROM");
-  printf("\r\n  - breathe: dims and brightens the LED repeatedly");
-  printf("\r\n  - brightness: sets the LED brightness");
-  printf("\r\n  - write: writes 4GB of data to the SD card");
-  printf("\r\n\n\n\e[32m➜ \e[0m ");
+  printf("\r\nNow listening...\r\n");
+  printf("\e[32m➜ \e[0m ");
   while (1) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
 
     // echoing the user's input
+
     HAL_UART_Receive(&huart1, uartRxBuf, 1, HAL_MAX_DELAY);
+    TIM1->CCR1 = 1;
     HAL_UART_Transmit(&huart1, uartRxBuf, 1, HAL_MAX_DELAY);
+    TIM1->CCR1 = 1000;
 
     if (uartRxBuf[0] == '\r') // if the user hits ENTER
     {
-      receivedData[index++] = '\r';
+      TIM1->CCR1 = 1;
       receivedData[index++] = '\n';
+      receivedData[index++] = '\0'; // Null-terminate the string
       printf("\r\n");
 
-      if (strncmp((char *)receivedData, "breathe", 7) == 0) {
-        printf("breathing for 10 cycles");
-        uint16_t step = 1;
-        uint16_t brightness = 1;
-        uint16_t round = 0;
-
-        while (round < 10) {
-          TIM1->CCR1 = brightness;
-          HAL_Delay(1); // adjust delay for breathing speed
-
-          brightness += step;
-
-          if (brightness == 800 || brightness == 1) {
-            step = -step; // Reverse direction at bounds
-            round++;
-            printf(".");
-          }
-        }
-        printf("\r\n");
-      } else if (strncmp((char *)receivedData, "write", 5) == 0) {
-        f_mount(&fs, "", 0);
-        f_open(&fil, "sensor.txt", FA_OPEN_ALWAYS | FA_READ | FA_WRITE);
-        uint8_t randomData[UINT8_MAX];
-        for (uint8_t i = 0; i < UINT8_MAX; i++) {
-          randomData[i] = 'A' + (rand() % 26); // Generate random letters
-        }
-        randomData[UINT8_MAX] = '\0'; // Null-terminate the string
-        for (uint32_t i = 0; i < 1024; i++) {
-          printf(".");
-          for (uint32_t j = 0; j < 1024; j++) {
-            f_puts(randomData, &fil);
-          }
-        }
-        f_close(&fil);
-        f_mount(NULL, "", 1);
-      } else if (strncmp((char *)receivedData, "ping", 4) == 0) {
-        printf("\r\nPong!\r\n");
-      } else if (strncmp((char *)receivedData, "pong", 4) == 0) {
-        printf("\r\nPing!\r\n");
-      } else if (strncmp((char *)receivedData, "clear", 5) == 0) {
-        printf("\e[2J");
-      } else if (strncmp((char *)receivedData, "brightness", 10) == 0) {
-        printf("\r\nEnter brightness (1-100): ");
-        uint8_t brightnessInput[4] = {0};
-        uint8_t brightnessIndex = 0;
-        while (1) {
-          HAL_UART_Receive(&huart1, uartRxBuf, 1, HAL_MAX_DELAY);
-          HAL_UART_Transmit(&huart1, uartRxBuf, 1, HAL_MAX_DELAY);
-
-          if (uartRxBuf[0] == '\r') { // User pressed ENTER
-            brightnessInput[brightnessIndex] = '\0';
-            printf("\r\n");
-            break;
-          } else if (uartRxBuf[0] == '\b' || uartRxBuf[0] == 127) { // BACKSPACE
-            if (brightnessIndex > 0) {
-              brightnessIndex--;
-              printf("\033[2D");
-              printf(" ");
-              printf("\033[1D");
+            if (f_mount(&fs, "", 0) == FR_OK) {
+              if (f_open(&fil, "sensor.txt", FA_OPEN_ALWAYS | FA_READ | FA_WRITE) == FR_OK) {
+                if (f_lseek(&fil, fil.fsize) == FR_OK) {
+                  if (f_puts(receivedData, &fil) >= 0) {
+                    f_close(&fil);
+                    printf("Data written successfully: %s\r\n", receivedData);
+                  } else {
+                    printf("Error: Failed to write data to file.\r\n");
+                    f_close(&fil);
+                  }
+                } else {
+                  printf("Error: Failed to seek to the end of the file.\r\n");
+                  f_close(&fil);
+                }
+              } else {
+                printf("Error: Failed to open the file.\r\n");
+              }
+              f_mount(NULL, "", 1);
             } else {
-              printf("\033[1D");
-            }
-          } else {
-            brightnessInput[brightnessIndex++] = uartRxBuf[0];
-          }
-        }
-
-        int brightnessValue = atoi((char *)brightnessInput);
-        if (brightnessValue >= 1 && brightnessValue <= 100) {
-          TIM1->CCR1 = (brightnessValue * 10); // Interpolate to range 1-1000
-          printf("Brightness set to %d\r\n", brightnessValue);
-        } else {
-          printf("Invalid brightness value. Please enter a number between 1 "
-                 "and 100.\r\n");
-        }
-      } else if (strncmp((char *)receivedData, "save", 4) == 0) {
-      printf("Writing test pattern to EEPROM...\r\n");
-          uint8_t write_error = 0;
-          for (uint16_t address = 0; address < 0x7D0; address += 16) {
-            // Note: sizeof("PSSC COMPLETION") is 16 (includes the null terminator)
-            uint8_t data[] = "PSSC COMPLETION";
-            // Check return status
-            if (eeprom_write_batch(data, address, sizeof(data)) != HAL_OK) {
-               printf("Error writing data to address %04X\r\n", address);
-               write_error = 1;
-               break; // Stop on error
-            }
-            // Optional: Small delay to allow printf buffer to flush if needed, or remove
-            // HAL_Delay(1);
-            // Reduce print frequency if it's too slow/spammy
-            if ((address % 0x100) == 0) { // Print every 256 bytes
-                 printf("Written up to address %04X...\r\n", address);
-            }
-          }
-
-          if (!write_error) {
-              printf("\r\nData write sequence completed. 1KB successfully written.\r\n");
-              // Optional: Disable write protect at the end
-              // eeprom_write_disable();
-          } else {
-               printf("\r\nData write sequence failed.\r\n");
-          }
-      } else if (strncmp((char *)receivedData, "read", 4) == 0) {
-      printf("Reading data from EEPROM...\r\n");
-          uint8_t read_error = 0;
-          for (uint16_t address = 0; address < 0x7D0; address += 16) {
-            // Buffer size 16 for data + 1 for null terminator
-            uint8_t data[17] = {0};
-            // *** Read exactly 16 bytes ***
-            const uint16_t bytes_to_read = 16;
-
-            // Check return status
-            if (eeprom_read_batch(data, address, bytes_to_read) != HAL_OK) {
-                printf("Error reading data from address %04X\r\n", address);
-                read_error = 1;
-                break; // Stop on error
+              printf("Error: Failed to mount the filesystem.\r\n");
             }
 
-            // Ensure null termination just in case (should already be zeroed)
-            data[bytes_to_read] = '\0';
-            printf("Address %04X: %s\r\n", address, data);
-
-             // Optional: Add a small delay if printf output gets garbled / too fast
-             // HAL_Delay(5);
-          }
-           if (!read_error) {
-              printf("\r\nData read sequence completed. 1KB successfully read.\r\n");
-          } else {
-               printf("\r\nData read sequence failed.\r\n");
-          }
-      } else if(strncmp((char *)receivedData, "reboot", 6) == 0) {
-      	NVIC_SystemReset();
-      } else {
-        printf("\r\nInvalid command: %s", receivedData);
-        printf("Valid commands: prox, sram, gps, ping, pong, clear, pic\r\n");
-      }
 
       index = 0; // Reset index for next message
       printf("\e[32m➜ \e[0m ");
@@ -314,9 +193,13 @@ int main(void) {
       } else {
         printf("\033[1D");
       }
-    } else {
-      receivedData[index++] = uartRxBuf[0];
-    }
+               } else if (uartRxBuf[0] == '\x03') {
+                 printf("\r\nCTRL+C detected. Exiting...\r\n");
+                 HAL_NVIC_SystemReset(); // Reset the system
+               } else {
+                 receivedData[index++] = uartRxBuf[0];
+               }
+    TIM1->CCR1 = 1000;
   }
   /* USER CODE END 3 */
 }
